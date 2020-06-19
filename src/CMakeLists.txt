@@ -468,7 +468,7 @@ else()
 endif()
 
 if(WITH_SYSTEM_JSONCPP)
-  list(APPEND SMDATA_LINK_LIB ${JSONCPP_LIBRARY})
+  list(APPEND SMDATA_LINK_LIB ${JSONCPP_LIBRARIES})
 else()
   list(APPEND SMDATA_LINK_LIB "jsoncpp")
 endif()
@@ -631,10 +631,23 @@ list(APPEND SM_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
             "${SM_SRC_DIR}/generated")
 list(APPEND SM_INCLUDE_DIRS "${JPEG_INCLUDE_DIR}")
 if(NOT APPLE)
-  list(APPEND SM_INCLUDE_DIRS
-              "${SM_EXTERN_DIR}/glew-1.5.8/include"
-              "${SM_EXTERN_DIR}/jsoncpp/include"
-              "${SM_EXTERN_DIR}/zlib")
+  if(NOT WITH_SYSTEM_GLEW)
+    list(APPEND SM_INCLUDE_DIRS
+                "${SM_EXTERN_DIR}/glew-1.5.8/include")
+  endif()
+
+  if(WITH_SYSTEM_JSONCPP)
+    list(APPEND SM_INCLUDE_DIRS ${JSONCPP_INCLUDE_DIRS})
+  else()
+    list(APPEND SM_INCLUDE_DIRS
+                "${SM_EXTERN_DIR}/jsoncpp/include")
+  endif()
+
+  if(NOT WITH_SYSTEM_ZLIB)
+    list(APPEND SM_INCLUDE_DIRS
+                "${SM_EXTERN_DIR}/zlib")
+  endif()
+
   if(MSVC)
     if(WITH_OGG)
       list(APPEND SM_INCLUDE_DIRS
@@ -644,7 +657,7 @@ if(NOT APPLE)
     endif()
     list(APPEND SM_INCLUDE_DIRS "${SM_EXTERN_DIR}/ffmpeg/include")
   else()
-    if(WITH_OGG)
+    if(WITH_OGG AND NOT WITH_SYSTEM_OGG)
       list(APPEND SM_INCLUDE_DIRS "${SM_EXTERN_DIR}/vorbis")
     endif()
     if(HAS_FFMPEG)
@@ -683,7 +696,7 @@ endif()
 if(WIN32)
   # FIXME: This makes no sense...
   #list(APPEND SM_INCLUDE_DIRS ${DIRECTX_INCLUDE_DIR})
-else()
+elseif(NOT WITH_SYSTEM_PNG)
   list(APPEND SM_INCLUDE_DIRS "${SM_EXTERN_DIR}/libpng/include")
 endif()
 
