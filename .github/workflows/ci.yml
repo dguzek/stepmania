@@ -44,6 +44,7 @@ jobs:
           libjack-dev
           libjsoncpp-dev
           libmad0-dev
+          libpng-dev
           libpulse-dev
           libtomcrypt-dev
           libtommath-dev
@@ -65,7 +66,7 @@ jobs:
           -DWITH_SYSTEM_MAD=ON
           -DWITH_SYSTEM_OGG=ON
           -DWITH_SYSTEM_PCRE=ON
-          -DWITH_SYSTEM_PNG=OFF
+          -DWITH_SYSTEM_PNG=ON
           -DWITH_SYSTEM_TOMCRYPT=OFF
           -DWITH_SYSTEM_TOMMATH=ON
           -DWITH_SYSTEM_ZLIB=ON
